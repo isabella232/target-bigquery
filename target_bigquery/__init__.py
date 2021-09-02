@@ -56,6 +56,7 @@ def main():
     table_prefix = config.get("table_prefix", "")
     table_suffix = config.get("table_suffix", "")
     location = config.get("location", "US")
+    skip_creation = config.get("skip_creation", False)
     validate_records = config.get("validate_records", True)
     add_metadata_columns = config.get("add_metadata_columns", True)
     project_id, dataset_id = config["project_id"], config["dataset_id"]
@@ -65,7 +66,7 @@ def main():
 
     tap_stream = io.TextIOWrapper(sys.stdin.buffer, encoding="utf-8")
 
-    client, dataset = ensure_dataset(project_id, dataset_id, location)
+    client, dataset = ensure_dataset(project_id, dataset_id, location, skip_creation)
 
     try:
         from target_bigquery.processhandler import LoadJobProcessHandler, PartialLoadJobProcessHandler, \
